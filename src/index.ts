@@ -30,7 +30,16 @@ app.use(async (req, res, next) => {
 });
 
 // Middleware
-app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }));
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://techify-frontend-swart.vercel.app'
+];
+if (ENV.CLIENT_URL && !allowedOrigins.includes(ENV.CLIENT_URL)) {
+  // If the env variable is missing https://, we can add it, but it's safer to just push it and the explicit https url
+  allowedOrigins.push(ENV.CLIENT_URL);
+}
+
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json({ limit: ENV.MAX_JSON_PAYLOAD }));
 app.use(express.urlencoded({ extended: true, limit: ENV.MAX_JSON_PAYLOAD }));
 
