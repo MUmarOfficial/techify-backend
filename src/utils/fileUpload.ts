@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { v4 as uuidv4 } from 'uuid';
 import { ENV } from '../config/env';
+import { v2 as cloudinary } from 'cloudinary';
 import { ApiError } from './ApiError';
 
 // Valid MIME types for file uploads
@@ -15,7 +16,7 @@ const VALID_MIME_TYPES = new Set([
   'video/quicktime',
 ]);
 
-export const saveBase64ToFile = (base64String: string): string => {
+export const saveBase64ToFile = async (base64String: string): Promise<string> => {
   // If it's not a data URL, return as-is (likely a regular URL like YouTube/Vimeo)
   if (!base64String?.startsWith('data:')) return base64String;
 
@@ -74,18 +75,45 @@ export const saveBase64ToFile = (base64String: string): string => {
     );
   }
 
-  // Create uploads directory if it doesn't exist
+  // Generate filename with appropriate extension
+  const extension = mimeType.split('/')[1] || 'bin';
+  const filename = `${(uuidv4 as () => string)()}.${extension}`;
+
+  // IF CLOUDINARY CREDENTIALS ARE PROVIDED, UPLOAD TO CLOUDINARY
+  if (ENV.CLOUDINARY_CLOUD_NAME && ENV.CLOUDINARY_API_KEY && ENV.CLOUDINARY_API_SECRET) {
+    cloudinary.config({
+      cloud_name: ENV.CLOUDINARY_CLOUD_NAME,
+      api_key: ENV.CLOUDINARY_API_KEY,
+      api_secret: ENV.CLOUDINARY_API_SECRET,
+    });
+    
+    try {
+      const result = await cloudinary.uploader.upload(base64String, {
+        resource_type: 'auto',
+        folder: 'lms-uploads',
+      });
+      return result.secure_url;
+    } catch (error) {
+      throw new ApiError(500, `Cloudinary upload failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+
+  // VERCEL SERVERLESS ENVIRONMENT FALLBACK
+  if (ENV.IS_VERCEL) {
+    // We cannot use local fs. Return the base64 string directly for DB storage if it's small,
+    // or log a warning and return it (though storing large base64 in Mongo is an anti-pattern,
+    // it prevents complete failure before Cloudinary is configured).
+    return base64String;
+  }
+
+  // LOCAL DEVELOPMENT - Write file to disk
   const uploadsDir = path.join(process.cwd(), ENV.UPLOAD_PATH);
   if (!fs.existsSync(uploadsDir)) {
     fs.mkdirSync(uploadsDir, { recursive: true });
   }
 
-  // Generate filename with appropriate extension
-  const extension = mimeType.split('/')[1] || 'bin';
-  const filename = `${(uuidv4 as () => string)()}.${extension}`;
   const filePath = path.join(uploadsDir, filename);
 
-  // Write file to disk
   try {
     fs.writeFileSync(filePath, buffer);
   } catch (error) {

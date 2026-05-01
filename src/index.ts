@@ -28,11 +28,12 @@ app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }));
 app.use(express.json({ limit: ENV.MAX_JSON_PAYLOAD }));
 app.use(express.urlencoded({ extended: true, limit: ENV.MAX_JSON_PAYLOAD }));
 
-// Serve uploads
-const uploadsDir = path.join(process.cwd(), ENV.UPLOAD_PATH);
-if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir);
-app.use(`/${ENV.UPLOAD_PATH}`, express.static(uploadsDir));
-
+// Serve uploads ONLY if we are not in a serverless environment (like Vercel)
+if (!ENV.IS_VERCEL) {
+  const uploadsDir = path.join(process.cwd(), ENV.UPLOAD_PATH);
+  if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+  app.use(`/${ENV.UPLOAD_PATH}`, express.static(uploadsDir));
+}
 
 if (ENV.NODE_ENV === 'development') app.use(morgan('dev'));
 
@@ -66,29 +67,39 @@ import { User } from './models/User.model';
 import { seedData } from './seeder';
 
 const PORT = Number(ENV.PORT) || 5000;
-connectDB()
-  .then(async () => {
+
+// Function to start server / initialize DB
+const initApp = async () => {
+  try {
+    await connectDB();
+    
     // Automated Seeding on first deployment
-    try {
-      const userCount = await User.countDocuments();
-      if (userCount === 0) {
-        log.info('📦 Empty database detected. Running automated seeder...');
-        await seedData(true);
-      }
-    } catch (seedErr) {
-      log.err('Failed to run automated seeder', seedErr);
+    const userCount = await User.countDocuments();
+    if (userCount === 0) {
+      log.info('📦 Empty database detected. Running automated seeder...');
+      await seedData(true);
     }
 
-    app.listen(PORT, () => {
-      log.info('=========================================');
-      log.info(`🏷️  ${pkg.name} v${pkg.version}`);
-      log.info(`🚀 Environment: ${ENV.NODE_ENV}`);
-      log.info('=========================================');
-      log.info(`► Base API:     http://localhost:${PORT}/api`);
-      log.info(`► Health Check: http://localhost:${PORT}/health`);
-      log.info('=========================================');
-    });
-  })
-  .catch((err: unknown) => {
-    log.err('Failed to connect to MongoDB', err);
-  });
+    // Only listen if NOT on Vercel
+    if (!ENV.IS_VERCEL) {
+      app.listen(PORT, () => {
+        log.info('=========================================');
+        log.info(`🏷️  ${pkg.name} v${pkg.version}`);
+        log.info(`🚀 Environment: ${ENV.NODE_ENV}`);
+        log.info('=========================================');
+        log.info(`► Base API:     http://localhost:${PORT}/api`);
+        log.info(`► Health Check: http://localhost:${PORT}/health`);
+        log.info('=========================================');
+      });
+    }
+  } catch (err) {
+    log.err('Failed to initialize application', err as Error);
+  }
+};
+
+initApp().catch((err) => {
+  log.err('Fatal error during application startup:', err);
+});
+
+// Required for Vercel Serverless
+export default app;

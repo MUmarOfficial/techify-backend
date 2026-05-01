@@ -156,7 +156,7 @@ export const updateProfile = asyncHandler(
     if (name) updates.name = name.trim();
     if (email) updates.email = email.toLowerCase().trim();
     if (avatar !== undefined) {
-      updates.avatar = avatar ? saveBase64ToFile(avatar) : '';
+      updates.avatar = avatar ? await saveBase64ToFile(avatar) : '';
     }
 
     const user = await User.findByIdAndUpdate(req.user!._id, updates, {

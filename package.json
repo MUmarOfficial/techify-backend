@@ -9,13 +9,14 @@
     "seed": "ts-node -r tsconfig-paths/register src/seeder.ts"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   },
   "_moduleAliases": {
     "@src": "dist"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
+    "cloudinary": "^2.10.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "cross-env": "^10.1.0",

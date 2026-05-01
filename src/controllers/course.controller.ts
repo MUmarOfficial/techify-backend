@@ -42,7 +42,7 @@ export const createCourse = asyncHandler(
         'Title, description, category, and price are required',
       );
     }
-    const finalThumbnail = thumbnail ? saveBase64ToFile(thumbnail) : '';
+    const finalThumbnail = thumbnail ? await saveBase64ToFile(thumbnail) : '';
 
     const course = await Course.create({
       title,
@@ -72,7 +72,7 @@ export const updateCourse = asyncHandler(
 
     const updateData = { ...(req.body as Record<string, unknown>) };
     if (typeof updateData.thumbnail === 'string') {
-      updateData.thumbnail = saveBase64ToFile(updateData.thumbnail);
+      updateData.thumbnail = await saveBase64ToFile(updateData.thumbnail);
     }
 
 

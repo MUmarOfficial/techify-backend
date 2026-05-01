@@ -7,7 +7,11 @@ export const ENV = {
   BCRYPT_ROUNDS: Number(process.env.BCRYPT_ROUNDS) || 10,
   CLIENT_URL: process.env.CLIENT_URL || 'http://localhost:5173',
   UPLOAD_PATH: process.env.UPLOAD_PATH || 'uploads',
+  CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
+  CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
+  CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
   MAX_JSON_PAYLOAD: process.env.MAX_JSON_PAYLOAD || '600mb',
+  IS_VERCEL: !!process.env.VERCEL,
   MEDIA_LIMITS: {
     THUMBNAIL: 50 * 1024 * 1024,
     VIDEO: 500 * 1024 * 1024,

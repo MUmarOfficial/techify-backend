@@ -53,8 +53,8 @@ export const createLesson = asyncHandler(
 
     // Process base64 files — any validation errors are caught by asyncHandler
     // and handled by error middleware (invalid format, size exceeds limit, etc.)
-    const finalVideoUrl = videoUrl ? saveBase64ToFile(videoUrl) : '';
-    const finalThumbnail = thumbnail ? saveBase64ToFile(thumbnail) : '';
+    const finalVideoUrl = videoUrl ? await saveBase64ToFile(videoUrl) : '';
+    const finalThumbnail = thumbnail ? await saveBase64ToFile(thumbnail) : '';
 
     const lesson = await Lesson.create({
       title,
@@ -85,10 +85,10 @@ export const updateLesson = asyncHandler(
     // Process base64 files if provided — validation errors are caught by asyncHandler
     // Errors include: invalid format, unsupported MIME type, size exceeds limit
     if (typeof updateData.videoUrl === 'string') {
-      updateData.videoUrl = saveBase64ToFile(updateData.videoUrl);
+      updateData.videoUrl = await saveBase64ToFile(updateData.videoUrl);
     }
     if (typeof updateData.thumbnail === 'string') {
-      updateData.thumbnail = saveBase64ToFile(updateData.thumbnail);
+      updateData.thumbnail = await saveBase64ToFile(updateData.thumbnail);
     }
 
     const updated = await Lesson.findByIdAndUpdate(

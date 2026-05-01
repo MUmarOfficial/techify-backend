@@ -3,15 +3,29 @@ import mongoose from 'mongoose';
 import { log } from '../utils/logger';
 import { ENV } from './env';
 
+// Track connection state globally for serverless environments
+let isConnected = false;
+
 export async function connectDB(): Promise<void> {
+  if (isConnected) {
+    log.info('🔄 Using existing MongoDB connection');
+    return;
+  }
+
   const uri = ENV.MONGO_URI;
   if (!uri)
     throw new Error('MONGO_URI is not defined in environment variables');
+
   try {
-    await mongoose.connect(uri);
+    const db = await mongoose.connect(uri);
+    isConnected = db.connections[0]?.readyState === mongoose.STATES.connected;
     log.info('✅ MongoDB connected successfully');
   } catch (err) {
     log.err('❌ MongoDB connection failed:', err);
-    process.exit(1);
+    // Only exit process if not running in a serverless environment
+    if (!ENV.IS_VERCEL) {
+      process.exit(1);
+    }
+    throw err;
   }
 }
