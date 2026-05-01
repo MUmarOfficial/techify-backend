@@ -22,7 +22,6 @@ import { User } from './models/User.model';
 import { seedData } from './seeder';
 import { log } from './utils/logger';
 
-
 const app = express();
 
 app.use(async (req, res, next) => {

@@ -3,6 +3,5 @@ dist/
 **/**/*.log
 tsconfig.tsbuildinfo
 .env
-src/seeder.ts
 node_modules
 .vscode/*

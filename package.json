@@ -36,7 +36,7 @@
     "mongoose": "^9.5.0",
     "morgan": "^1.10.1",
     "tspo": "^1.0.7",
-    "uuid": "^14.0.0"
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -45,6 +45,7 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
     "@types/find": "^0.2.4",
     "@types/fs-extra": "^11.0.4",
     "@types/jsonfile": "^6.1.4",
