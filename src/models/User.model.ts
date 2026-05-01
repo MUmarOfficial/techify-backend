@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { Document, model, Schema } from 'mongoose';
 
-import { ENV } from '../config/env';
+import { ENV } from '../config/env.js';
 
 export type UserRole = 'student' | 'instructor' | 'admin';
 

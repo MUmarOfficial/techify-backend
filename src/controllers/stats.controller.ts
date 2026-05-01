@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import { Model, Document } from 'mongoose';
-import { Course } from '../models/Course.model';
-import { Enrollment } from '../models/Enrollment.model';
-import { User } from '../models/User.model';
-import { asyncHandler } from '../utils/asyncHandler';
+import { Course } from '../models/Course.model.js';
+import { Enrollment } from '../models/Enrollment.model.js';
+import { User } from '../models/User.model.js';
+import { asyncHandler } from '../utils/asyncHandler.js';
 
 export const getAdminStats = asyncHandler(async (req: Request, res: Response) => {
   const totalUsers = await User.countDocuments();

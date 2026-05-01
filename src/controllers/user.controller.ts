@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express';
 
-import { User } from '../models/User.model';
-import { ApiError } from '../utils/ApiError';
-import { asyncHandler } from '../utils/asyncHandler';
+import { User } from '../models/User.model.js';
+import { ApiError } from '../utils/ApiError.js';
+import { asyncHandler } from '../utils/asyncHandler.js';
 
 // GET /api/users — admin only
 export const getAllUsers = asyncHandler(

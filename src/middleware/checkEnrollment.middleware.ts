@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { Types } from 'mongoose';
-import { Enrollment } from '../models/Enrollment.model';
-import { ApiError } from '../utils/ApiError';
-import type { IUser } from '../models/User.model';
+import { Enrollment } from '../models/Enrollment.model.js';
+import { ApiError } from '../utils/ApiError.js';
+import type { IUser } from '../models/User.model.js';
 
 interface UserRequest extends Request {
   user?: IUser;

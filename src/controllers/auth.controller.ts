@@ -1,11 +1,11 @@
 import type { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
-import { ENV } from '../config/env';
-import { User } from '../models/User.model';
-import { ApiError } from '../utils/ApiError';
-import { asyncHandler } from '../utils/asyncHandler';
-import { saveBase64ToFile } from '../utils/fileUpload';
+import { ENV } from '../config/env.js';
+import { User } from '../models/User.model.js';
+import { ApiError } from '../utils/ApiError.js';
+import { asyncHandler } from '../utils/asyncHandler.js';
+import { saveBase64ToFile } from '../utils/fileUpload.js';
 
 
 const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;

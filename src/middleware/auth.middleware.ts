@@ -1,10 +1,10 @@
 import type { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
-import { ENV } from '../config/env';
-import { User } from '../models/User.model';
-import { ApiError } from '../utils/ApiError';
-import { asyncHandler } from '../utils/asyncHandler';
+import { ENV } from '../config/env.js';
+import { User } from '../models/User.model.js';
+import { ApiError } from '../utils/ApiError.js';
+import { asyncHandler } from '../utils/asyncHandler.js';
 
 interface JwtPayload {
   id: string;

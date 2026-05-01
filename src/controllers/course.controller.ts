@@ -1,9 +1,9 @@
 import type { Request, Response } from 'express';
 
-import { Course } from '../models/Course.model';
-import { ApiError } from '../utils/ApiError';
-import { asyncHandler } from '../utils/asyncHandler';
-import { saveBase64ToFile } from '../utils/fileUpload';
+import { Course } from '../models/Course.model.js';
+import { ApiError } from '../utils/ApiError.js';
+import { asyncHandler } from '../utils/asyncHandler.js';
+import { saveBase64ToFile } from '../utils/fileUpload.js';
 
 
 // GET /api/courses — public

@@ -1,9 +1,9 @@
 import type { Request, Response } from 'express';
 import { Types } from 'mongoose';
-import { Enrollment } from '../models/Enrollment.model';
-import { Lesson } from '../models/Lesson.model';
-import { ApiError } from '../utils/ApiError';
-import { asyncHandler } from '../utils/asyncHandler';
+import { Enrollment } from '../models/Enrollment.model.js';
+import { Lesson } from '../models/Lesson.model.js';
+import { ApiError } from '../utils/ApiError.js';
+import { asyncHandler } from '../utils/asyncHandler.js';
 
 // POST /api/progress/complete-lesson — mark lesson as complete
 export const completeLesson = asyncHandler(

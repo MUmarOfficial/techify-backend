@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from 'express';
 
-import { ApiError } from '../utils/ApiError';
-import { log } from '../utils/logger';
+import { ApiError } from '../utils/ApiError.js';
+import { log } from '../utils/logger.js';
 
 export function errorMiddleware(
   err: Error,

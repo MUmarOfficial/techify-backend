@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { getAdminStats, getInstructorStats, getStudentStats } from '../controllers/stats.controller';
-import { protect } from '../middleware/auth.middleware';
-import { authorize } from '../middleware/role.middleware';
+import { getAdminStats, getInstructorStats, getStudentStats } from '../controllers/stats.controller.js';
+import { protect } from '../middleware/auth.middleware.js';
+import { authorize } from '../middleware/role.middleware.js';
 
 const router = Router();
 

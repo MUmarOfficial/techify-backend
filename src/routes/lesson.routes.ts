@@ -6,10 +6,10 @@ import {
   getCourseLessonsPreview,
   getLessonsByCourse,
   updateLesson,
-} from '../controllers/lesson.controller';
-import { protect } from '../middleware/auth.middleware';
-import { authorize } from '../middleware/role.middleware';
-import { checkEnrollment, preventDownload } from '../middleware/checkEnrollment.middleware';
+} from '../controllers/lesson.controller.js';
+import { protect } from '../middleware/auth.middleware.js';
+import { authorize } from '../middleware/role.middleware.js';
+import { checkEnrollment, preventDownload } from '../middleware/checkEnrollment.middleware.js';
 
 const router = Router();
 

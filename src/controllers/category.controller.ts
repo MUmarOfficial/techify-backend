@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
-import { Category } from '../models/Category.model';
-import { ApiError } from '../utils/ApiError';
-import { asyncHandler } from '../utils/asyncHandler';
+import { Category } from '../models/Category.model.js';
+import { ApiError } from '../utils/ApiError.js';
+import { asyncHandler } from '../utils/asyncHandler.js';
 
 // GET /api/categories
 export const getCategories = asyncHandler(async (_req: Request, res: Response) => {

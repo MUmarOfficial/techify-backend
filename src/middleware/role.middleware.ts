@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from 'express';
 
-import type { UserRole } from '../models/User.model';
-import { ApiError } from '../utils/ApiError';
+import type { UserRole } from '../models/User.model.js';
+import { ApiError } from '../utils/ApiError.js';
 
 export const authorize =
   (...roles: UserRole[]) =>

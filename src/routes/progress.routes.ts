@@ -4,8 +4,8 @@ import {
   completeLesson,
   getProgressData,
   updateWatchProgress,
-} from '../controllers/progress.controller';
-import { protect } from '../middleware/auth.middleware';
+} from '../controllers/progress.controller.js';
+import { protect } from '../middleware/auth.middleware.js';
 
 const router = Router();
 

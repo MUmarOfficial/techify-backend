@@ -1,9 +1,9 @@
 import type { Request, Response } from 'express';
 
-import { Course } from '../models/Course.model';
-import { Enrollment } from '../models/Enrollment.model';
-import { ApiError } from '../utils/ApiError';
-import { asyncHandler } from '../utils/asyncHandler';
+import { Course } from '../models/Course.model.js';
+import { Enrollment } from '../models/Enrollment.model.js';
+import { ApiError } from '../utils/ApiError.js';
+import { asyncHandler } from '../utils/asyncHandler.js';
 
 // POST /api/enroll — student only
 export const enrollInCourse = asyncHandler(
