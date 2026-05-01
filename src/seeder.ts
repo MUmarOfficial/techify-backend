@@ -105,7 +105,7 @@ export const seedData = async (isAuto = false) => {
 
     const thumbnails = [
       'https://images.unsplash.com/photo-1633356122544-f134324a6cee',
-      'https://images.unsplash.com/photo-1667372393086-9d4001d4d732',
+      'https://images.unsplash.com/photo-1517694712202-14dd9538aa97', // Replaced broken one
       'https://images.unsplash.com/photo-1555066931-4365d14bab8c',
       'https://images.unsplash.com/photo-1542831371-29b0f74f9713',
       'https://images.unsplash.com/photo-1498050108023-c5249f4df085'
@@ -113,13 +113,25 @@ export const seedData = async (isAuto = false) => {
 
     for (let i = 0; i < 20; i++) {
       const assignedInstructor = instructors[Math.floor(Math.random() * instructors.length)];
+      
+      let thumbnail = thumbnails[i % thumbnails.length];
+      if (courseTitles[i] === "C# & .NET Core Enterprise Apps") {
+        thumbnail = 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97';
+      } else if (courseTitles[i] === "Deep Learning with TensorFlow") {
+        thumbnail = 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485';
+      } else if (courseTitles[i] === "Full-Stack Next.js 14 E-commerce") {
+        thumbnail = 'https://images.unsplash.com/photo-1557821552-17105176677c';
+      } else if (courseTitles[i] === "Complete Node.js Backend Engineering") {
+        thumbnail = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c';
+      }
+
       coursesData.push({
         title: courseTitles[i],
         description: `This is the comprehensive deep dive into ${courseTitles[i]}. Master the fundamentals to advanced, modern techniques utilized by top tech companies globally.`,
         instructor: assignedInstructor._id,
         category: categoriesNames[i % categoriesNames.length],
         price: Math.floor(Math.random() * 150) + 20.99,
-        thumbnail: thumbnails[i % thumbnails.length]
+        thumbnail: thumbnail
       });
     }
     const courses = await Course.insertMany(coursesData);
