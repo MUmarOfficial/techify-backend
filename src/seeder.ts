@@ -1,14 +1,15 @@
 import bcrypt from 'bcryptjs';
 import 'dotenv/config';
 import mongoose from 'mongoose';
+import { fileURLToPath } from 'node:url';
 
-import { ENV } from './config/env';
-import { Course } from './models/Course.model';
-import { Enrollment } from './models/Enrollment.model';
-import { Lesson } from './models/Lesson.model';
-import { User } from './models/User.model';
-import { Category } from './models/Category.model';
-import { log } from './utils/logger';
+import { ENV } from './config/env.js';
+import { Course } from './models/Course.model.js';
+import { Enrollment } from './models/Enrollment.model.js';
+import { Lesson } from './models/Lesson.model.js';
+import { User } from './models/User.model.js';
+import { Category } from './models/Category.model.js';
+import { log } from './utils/logger.js';
 
 export const seedData = async (isAuto = false) => {
   try {
@@ -201,7 +202,7 @@ export const seedData = async (isAuto = false) => {
   }
 };
 
-// If this file is run directly (e.g. `npm run seed`), process.argv[1] will match this file
-if (require.main === module) {
+// If this file is run directly (e.g. `npm run seed`)
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
   void seedData(false);
 }

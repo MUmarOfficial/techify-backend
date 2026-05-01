@@ -5,22 +5,22 @@ import morgan from 'morgan';
 import fs from 'node:fs';
 import path from 'node:path';
 
-import pkg from '../package.json';
+import pkg from '../package.json' with { type: 'json' };
 // Routes
-import authRoutes from '../src/routes/auth.routes';
-import categoryRoutes from '../src/routes/category.routes';
-import courseRoutes from '../src/routes/course.routes';
-import enrollmentRoutes from '../src/routes/enrollment.routes';
-import lessonRoutes from '../src/routes/lesson.routes';
-import progressRoutes from '../src/routes/progress.routes';
-import statsRoutes from '../src/routes/stats.routes';
-import userRoutes from '../src/routes/user.routes';
-import { connectDB } from './config/db';
-import { ENV } from './config/env';
-import { errorMiddleware } from './middleware/error.middleware';
-import { User } from './models/User.model';
-import { seedData } from './seeder';
-import { log } from './utils/logger';
+import authRoutes from './routes/auth.routes.js';
+import categoryRoutes from './routes/category.routes.js';
+import courseRoutes from './routes/course.routes.js';
+import enrollmentRoutes from './routes/enrollment.routes.js';
+import lessonRoutes from './routes/lesson.routes.js';
+import progressRoutes from './routes/progress.routes.js';
+import statsRoutes from './routes/stats.routes.js';
+import userRoutes from './routes/user.routes.js';
+import { connectDB } from './config/db.js';
+import { ENV } from './config/env.js';
+import { errorMiddleware } from './middleware/error.middleware.js';
+import { User } from './models/User.model.js';
+import { seedData } from './seeder.js';
+import { log } from './utils/logger.js';
 
 const app = express();
 
