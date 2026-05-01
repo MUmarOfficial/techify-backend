@@ -1,11 +1,9 @@
 import type { Request, Response } from 'express';
-
 import { Course } from '../models/Course.model.js';
 import { Lesson } from '../models/Lesson.model.js';
 import { ApiError } from '../utils/ApiError.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { saveBase64ToFile } from '../utils/fileUpload.js';
-
 
 // GET /api/lessons/course/:courseId — protected
 export const getLessonsByCourse = asyncHandler(
@@ -31,14 +29,15 @@ export const getCourseLessonsPreview = asyncHandler(
 // POST /api/lessons — instructor only
 export const createLesson = asyncHandler(
   async (req: Request, res: Response) => {
-    const { title, content, videoUrl, thumbnail, courseId, order } = req.body as {
-      title: string;
-      content: string;
-      videoUrl?: string;
-      thumbnail?: string;
-      courseId: string;
-      order: number;
-    };
+    const { title, content, videoUrl, thumbnail, courseId, order } =
+      req.body as {
+        title: string;
+        content: string;
+        videoUrl?: string;
+        thumbnail?: string;
+        courseId: string;
+        order: number;
+      };
     if (!title || !content || !courseId || !order) {
       throw new ApiError(
         400,
@@ -91,11 +90,10 @@ export const updateLesson = asyncHandler(
       updateData.thumbnail = await saveBase64ToFile(updateData.thumbnail);
     }
 
-    const updated = await Lesson.findByIdAndUpdate(
-      req.params.id,
-      updateData,
-      { new: true, runValidators: true },
-    );
+    const updated = await Lesson.findByIdAndUpdate(req.params.id, updateData, {
+      new: true,
+      runValidators: true,
+    });
 
     res.json({ success: true, message: 'Lesson updated', data: updated });
   },

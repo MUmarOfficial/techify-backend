@@ -1,9 +1,7 @@
 import mongoose from 'mongoose';
-
 import { log } from '../utils/logger.js';
 import { ENV } from './env.js';
 
-// Track connection state globally for serverless environments
 let isConnected = false;
 
 export async function connectDB(): Promise<void> {
@@ -22,7 +20,7 @@ export async function connectDB(): Promise<void> {
     log.info('✅ MongoDB connected successfully');
   } catch (err) {
     log.err('❌ MongoDB connection failed:', err);
-    // Only exit process if not running in a serverless environment
+
     if (!ENV.IS_VERCEL) {
       process.exit(1);
     }

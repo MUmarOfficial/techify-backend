@@ -18,4 +18,3 @@ export const ENV = {
     AVATAR: 1 * 1024 * 1024,
   },
 };
-

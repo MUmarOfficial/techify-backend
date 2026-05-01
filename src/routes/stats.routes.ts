@@ -1,5 +1,10 @@
 import { Router } from 'express';
-import { getAdminStats, getInstructorStats, getStudentStats } from '../controllers/stats.controller.js';
+
+import {
+  getAdminStats,
+  getInstructorStats,
+  getStudentStats,
+} from '../controllers/stats.controller.js';
 import { protect } from '../middleware/auth.middleware.js';
 import { authorize } from '../middleware/role.middleware.js';
 

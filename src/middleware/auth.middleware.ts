@@ -38,9 +38,11 @@ export const protect = asyncHandler(
 export const authorize = (...roles: string[]) => {
   return (req: Request, _res: Response, next: NextFunction) => {
     if (!req.user || !roles.includes(req.user.role)) {
-      throw new ApiError(403, `User role ${req.user?.role} is not authorized to access this route`);
+      throw new ApiError(
+        403,
+        `User role ${req.user?.role} is not authorized to access this route`,
+      );
     }
     next();
   };
 };
-

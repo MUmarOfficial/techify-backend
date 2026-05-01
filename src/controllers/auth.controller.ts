@@ -7,7 +7,6 @@ import { ApiError } from '../utils/ApiError.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { saveBase64ToFile } from '../utils/fileUpload.js';
 
-
 const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
 
 const generateToken = (id: string): string => {
@@ -16,7 +15,6 @@ const generateToken = (id: string): string => {
   return jwt.sign({ id }, secret, { expiresIn } as jwt.SignOptions);
 };
 
-// POST /api/auth/register
 export const register = asyncHandler(async (req: Request, res: Response) => {
   const { name, email, password, role } = req.body as {
     name: string;
@@ -49,7 +47,6 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
     .json({ success: true, message: 'Registration successful', token, user });
 });
 
-// POST /api/auth/login
 export const login = asyncHandler(async (req: Request, res: Response) => {
   const { email, password } = req.body as { email: string; password: string };
   if (!email || !password)
@@ -61,18 +58,16 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
   }
 
   const token = generateToken(user._id.toString());
-  user.password = ''; // strip before responding
+  user.password = '';
   res.json({ success: true, message: 'Login successful', token, user });
 });
 
-// GET /api/auth/me
 export const getMe = asyncHandler(async (req: Request, res: Response) => {
   const user = await User.findById(req.user!._id);
   if (!user) throw new ApiError(404, 'User not found');
   res.json({ success: true, user });
 });
 
-// PATCH /api/auth/change-password — all authenticated roles
 export const changePassword = asyncHandler(
   async (req: Request, res: Response) => {
     const { currentPassword, newPassword } = req.body as {
@@ -101,7 +96,6 @@ export const changePassword = asyncHandler(
     res.json({ success: true, message: 'Password changed successfully' });
   },
 );
-
 
 /**
  * Helper to validate profile update data
@@ -141,7 +135,6 @@ const validateUpdateData = async (
   }
 };
 
-// PATCH /api/auth/profile — all authenticated roles
 export const updateProfile = asyncHandler(
   async (req: Request, res: Response) => {
     const { name, email, avatar } = req.body as {

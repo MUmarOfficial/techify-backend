@@ -121,7 +121,7 @@ export const updateWatchProgress = asyncHandler(
     }
 
     // Update lastAccessedLesson
-    enrollment.lastAccessedLesson = new Types.ObjectId(lessonId)
+    enrollment.lastAccessedLesson = new Types.ObjectId(lessonId);
 
     await enrollment.save();
 

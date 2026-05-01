@@ -1,8 +1,9 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { Types } from 'mongoose';
+
 import { Enrollment } from '../models/Enrollment.model.js';
-import { ApiError } from '../utils/ApiError.js';
 import type { IUser } from '../models/User.model.js';
+import { ApiError } from '../utils/ApiError.js';
 
 interface UserRequest extends Request {
   user?: IUser;
@@ -13,7 +14,7 @@ interface UserRequest extends Request {
 export const checkEnrollment = async (
   req: UserRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     // Get courseId from params or query
@@ -47,7 +48,8 @@ export const checkEnrollment = async (
         message: error.message,
       });
     } else {
-      const message = error instanceof Error ? error.message : 'Failed to verify enrollment';
+      const message =
+        error instanceof Error ? error.message : 'Failed to verify enrollment';
       res.status(500).json({
         success: false,
         message,
@@ -57,7 +59,11 @@ export const checkEnrollment = async (
 };
 
 // Middleware to set response headers to prevent video downloads
-export const preventDownload = (_req: Request, res: Response, next: NextFunction) => {
+export const preventDownload = (
+  _req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   // Set headers to prevent file download
   res.setHeader('Content-Disposition', 'inline');
   res.setHeader('Cache-Control', 'public, max-age=3600'); // Cache for 1 hour

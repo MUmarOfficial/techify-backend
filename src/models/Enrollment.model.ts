@@ -11,6 +11,9 @@ export interface IEnrollment extends Document {
     percentage: number;
   }>;
   enrolledAt: Date;
+  paymentStatus: 'pending' | 'completed' | 'failed';
+  paymentMethod?: string;
+  transactionId?: string;
 }
 
 const enrollmentSchema = new Schema<IEnrollment>(
@@ -22,10 +25,21 @@ const enrollmentSchema = new Schema<IEnrollment>(
     lastAccessedLesson: { type: Schema.Types.ObjectId, ref: 'Lesson' },
     videoWatchProgress: [
       {
-        lessonId: { type: Schema.Types.ObjectId, ref: 'Lesson', required: true },
+        lessonId: {
+          type: Schema.Types.ObjectId,
+          ref: 'Lesson',
+          required: true,
+        },
         percentage: { type: Number, default: 0, min: 0, max: 100 },
       },
     ],
+    paymentStatus: {
+      type: String,
+      enum: ['pending', 'completed', 'failed'],
+      default: 'pending',
+    },
+    paymentMethod: { type: String },
+    transactionId: { type: String },
   },
   { timestamps: { createdAt: 'enrolledAt', updatedAt: false } },
 );

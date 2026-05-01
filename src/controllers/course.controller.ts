@@ -5,7 +5,6 @@ import { ApiError } from '../utils/ApiError.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { saveBase64ToFile } from '../utils/fileUpload.js';
 
-
 // GET /api/courses — public
 export const getCourses = asyncHandler(async (_req: Request, res: Response) => {
   const courses = await Course.find()
@@ -75,15 +74,10 @@ export const updateCourse = asyncHandler(
       updateData.thumbnail = await saveBase64ToFile(updateData.thumbnail);
     }
 
-
-    const updated = await Course.findByIdAndUpdate(
-      req.params.id,
-      updateData,
-      {
-        new: true,
-        runValidators: true,
-      },
-    );
+    const updated = await Course.findByIdAndUpdate(req.params.id, updateData, {
+      new: true,
+      runValidators: true,
+    });
 
     res.json({ success: true, message: 'Course updated', data: updated });
   },
