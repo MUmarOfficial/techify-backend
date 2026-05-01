@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
-import { log } from '../utils/logger';
-import { ENV } from './env';
+import { log } from '../utils/logger.js';
+import { ENV } from './env.js';
 
 // Track connection state globally for serverless environments
 let isConnected = false;
