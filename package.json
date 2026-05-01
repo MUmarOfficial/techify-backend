@@ -36,7 +36,7 @@
     "mongoose": "^9.5.0",
     "morgan": "^1.10.1",
     "tspo": "^1.0.7",
-    "uuid": "^8.3.2"
+    "uuid": "^14.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
