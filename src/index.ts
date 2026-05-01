@@ -2,26 +2,33 @@ import cors from 'cors';
 import 'dotenv/config';
 import express from 'express';
 import morgan from 'morgan';
-import path from 'node:path';
 import fs from 'node:fs';
+import path from 'node:path';
 
-
+import pkg from '../package.json';
 // Routes
 import authRoutes from '../src/routes/auth.routes';
+import categoryRoutes from '../src/routes/category.routes';
 import courseRoutes from '../src/routes/course.routes';
 import enrollmentRoutes from '../src/routes/enrollment.routes';
-import progressRoutes from '../src/routes/progress.routes';
 import lessonRoutes from '../src/routes/lesson.routes';
+import progressRoutes from '../src/routes/progress.routes';
 import statsRoutes from '../src/routes/stats.routes';
 import userRoutes from '../src/routes/user.routes';
-import categoryRoutes from '../src/routes/category.routes';
 import { connectDB } from './config/db';
-
 import { ENV } from './config/env';
 import { errorMiddleware } from './middleware/error.middleware';
+import { User } from './models/User.model';
+import { seedData } from './seeder';
 import { log } from './utils/logger';
 
+
 const app = express();
+
+app.use(async (req, res, next) => {
+  await connectDB();
+  next();
+});
 
 // Middleware
 app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }));
@@ -52,7 +59,6 @@ app.use('/api/progress', progressRoutes);
 app.use('/api/stats', statsRoutes);
 app.use('/api/categories', categoryRoutes);
 
-
 // 404 handler
 app.use((_req, res) => {
   res.status(404).json({ success: false, message: 'Route not found' });
@@ -61,18 +67,13 @@ app.use((_req, res) => {
 // Global error handler (must be last)
 app.use(errorMiddleware);
 
-import pkg from '../package.json';
-
-import { User } from './models/User.model';
-import { seedData } from './seeder';
-
 const PORT = Number(ENV.PORT) || 5000;
 
 // Function to start server / initialize DB
 const initApp = async () => {
   try {
     await connectDB();
-    
+
     // Automated Seeding on first deployment
     const userCount = await User.countDocuments();
     if (userCount === 0) {
